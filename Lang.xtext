@@ -7,10 +7,7 @@ MathExp:
 ;
 
 Exp returns Exp: // Illegal due to left recursion
-	//left=Atomic (right=PlusOrMinus)?
 	PlusOrMinus
-	//Primary ({Exp.left=current} operator=ExpOp right=Primary)
-	//left=Primary (operator=ExpOp right=Exp)?
 ;
 
 PlusOrMinus returns Exp:
@@ -33,5 +30,5 @@ Atomic returns Exp:
 ;
 
 Parenthesis returns Exp:
-	'(' left=Exp')'
+	'(' PlusOrMinus')'
 ;
