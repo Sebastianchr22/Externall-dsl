@@ -6,8 +6,8 @@ MathExp:
 	'result' 'is' exp=Exp
 ;
 
-Exp: // Illegal due to left recursion
-	//left=Atomic (op=('+'|'-'|'*'|'/') right=PlusOrMinus)?
+Exp returns Exp: // Illegal due to left recursion
+	//left=Atomic (right=PlusOrMinus)?
 	PlusOrMinus
 	//Primary ({Exp.left=current} operator=ExpOp right=Primary)
 	//left=Primary (operator=ExpOp right=Exp)?
@@ -17,7 +17,6 @@ PlusOrMinus returns Exp:
 	MulOrDiv(
 		({Plus.left=current} '+' | {Minus.left=current} '-')
 		 right=MulOrDiv
-		 op=('+'|'-')
 	)* 
 ;
 
@@ -25,7 +24,6 @@ MulOrDiv returns Exp:
 	Atomic (
 		({Mult.left=current} '*' | {Div.left=current} '/')
 		right=Atomic
-		op=('*'|'/')
 	)*
 ;
 
