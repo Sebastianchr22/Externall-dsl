@@ -44,36 +44,13 @@ class MathLangGenerator extends AbstractGenerator {
 		System::out.println("Result: " + res);
 		return res
 	}
-
-	def dispatch int computeExp(Exp e) {
-		System::out.println("Starting Exp: " + e.displayExp)
-		return e.left.computeExp
-	}
-
-	def dispatch int computeExp(Plus e){
-		System::out.println("Plus op: " + e.displayExp)
-		return e.left.computeExp as Integer + e.right.computeExp
-	}
 	
-	def dispatch int computeExp(Minus e){
-		System::out.println("Minus op: " + e.left.displayExp + "-" + e.right.displayExp)
-		return e.left.computeExp as Integer - e.right.computeExp
-	}
-	
-	def dispatch int computeExp(IntConstant e){
-		System::out.println("int: " + e.displayExp)
-		return e.value
-	}
-	
-	def Object getExpValue(Exp e){
-		switch(e)
-		{
-			IntConstant: e.value
-			ParConstant: e.par
-		}
-	}
-
-
+	def dispatch int computeExp(Mult e){e.left.computeExp as Integer * e.right.computeExp}
+	def dispatch int computeExp(Div e){e.left.computeExp as Integer / e.right.computeExp}
+	def dispatch int computeExp(Plus e){e.left.computeExp as Integer + e.right.computeExp}
+	def dispatch int computeExp(Minus e){e.left.computeExp as Integer - e.right.computeExp}
+	def dispatch int computeExp(IntConstant e){e.value}
+	def dispatch int computeExp(ParConstant e){e.par.computeExp}
 
 
 	//
