@@ -46,19 +46,20 @@ class MathLangGenerator extends AbstractGenerator {
 	}
 
 	def int computeExp(Exp e) {
-		System::out.println("Exp:" + e.displayExp);
-		val l = e.left.getExpValue as Integer
-		System::out.println("Initial l: " + l)
-		if(e.op == '-'){
-			l - e.right.getExpValue as Integer
-		}
-		if(e.op == '+'){
-			System::out.println("Plus: 	" + e.right)
-			l + e.right.getExpValue	 as Integer
-		}
-		else{
-			System::out.println("Final value")
-			l
+		System::out.println("Expression: " + "   (" + e + ")")
+		switch(e){
+			Plus:{
+				val left = e.left.getExpValue as Integer
+				var right = e.right.computeExp
+				left + right
+			}
+			Minus:{
+				val left = e.left.getExpValue as Integer
+				var right = e.right.computeExp
+				left - right
+			}
+			
+			IntConstant: e.value
 		}
 	}
 
@@ -67,7 +68,6 @@ class MathLangGenerator extends AbstractGenerator {
 		{
 			IntConstant: e.value
 			ParConstant: e.par
-			default: 0
 		}
 	}
 
@@ -78,15 +78,14 @@ class MathLangGenerator extends AbstractGenerator {
 	// Display function: show complete syntax tree
 	// Note: written according to illegal left-recursive grammar, requires fix
 	//
-	def CharSequence display(MathExp math) '''Math: «math.exp.displayExp»'''
+	def CharSequence display(MathExp math) '''Math: Â«math.exp.displayExpÂ»'''
 	
-	def dispatch CharSequence displayExp(Exp e) { '''«e.left.displayExp»«e.op.toString»«e.right.displayExp»''' }
-	def dispatch CharSequence displayExp(Minus e) { '''«e.left.displayExp»-«e.right.displayExp»''' }
-	def dispatch CharSequence displayExp(Plus e) { '''«e.left.displayExp»+«e.right.displayExp»''' }
-	def dispatch CharSequence displayExp(Mult e) { '''«e.left»*«e.right»''' }
-	def dispatch CharSequence displayExp(Div e) { '''«e.left»/«e.right»''' }
-	def dispatch CharSequence displayExp(IntConstant e){'''«e.value»'''}
-	def dispatch CharSequence displayExp(ParConstant e){'''«e.par.displayExp»'''}
+	def dispatch CharSequence displayExp(Minus e) { '''Â«e.left.displayExpÂ»-Â«e.right.displayExpÂ»''' }
+	def dispatch CharSequence displayExp(Plus e) { '''Â«e.left.displayExpÂ»+Â«e.right.displayExpÂ»''' }
+	def dispatch CharSequence displayExp(Mult e) { '''Â«e.leftÂ»*Â«e.rightÂ»''' }
+	def dispatch CharSequence displayExp(Div e) { '''Â«e.leftÂ»/Â«e.rightÂ»''' }
+	def dispatch CharSequence displayExp(IntConstant e){'''Â«e.valueÂ»'''}
+	def dispatch CharSequence displayExp(ParConstant e){'''Â«e.par.displayExpÂ»'''}
 	
 	def dispatch String displayOp(Plus op) { "+" }
 
