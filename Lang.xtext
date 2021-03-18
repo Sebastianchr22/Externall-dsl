@@ -6,9 +6,9 @@ MathExp:
 	'result' 'is' exp=Exp
 ;
 
-Exp returns Exp: // Illegal due to left recursion
-	left=Atomic (op=('+'|'-'|'*'|'/') right=PlusOrMinus)?
-	//PlusOrMinus
+Exp: // Illegal due to left recursion
+	//left=Atomic (op=('+'|'-'|'*'|'/') right=PlusOrMinus)?
+	PlusOrMinus
 	//Primary ({Exp.left=current} operator=ExpOp right=Primary)
 	//left=Primary (operator=ExpOp right=Exp)?
 ;
@@ -36,11 +36,4 @@ Atomic returns Exp:
 
 Parenthesis returns Exp:
 	'(' left=Exp')'
-;
-
-ExpOp returns Exp:
-	{Plus} '+'|
-	{Minus} '-'|
-	{Mult} '*' |
-	{Div} '/'
 ;
