@@ -30,7 +30,7 @@ class LangParsingTest {
 		val result = parseHelper.parse('''result is 87''')
 		Assertions.assertNotNull(result)
 		val errors = result.eResource.errors
-		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: «errors.join(", ")»''')
+		Assertions.assertTrue(errors.isEmpty, '''Unexpected errors: Â«errors.join(", ")Â»''')
 	}
 
 	@Test
@@ -38,10 +38,23 @@ class LangParsingTest {
 		val result = parseHelper.parse('''result is 80+7''')
 		Assertions.assertTrue(result.compute==87)
 	}
+	
+	@Test
+	def void T02_subtraction() {
+		val result = parseHelper.parse('''result is 94-7''')
+		Assertions.assertTrue(result.compute==87)
+	}
 
 	@Test
+	def void T02_subtraction2() {
+		val result = parseHelper.parse('''result is 94-4-3''')
+		Assertions.assertTrue(result.compute==87)
+	}
+	
+	
+	@Test
 	def void T02_addsub() {
-		val result = parseHelper.parse('''result is 100-20+10-3-2-1''')
+		val result = parseHelper.parse('''result is 100-20+10-3''')
 		Assertions.assertTrue(result.compute==87)
 	}
 	
