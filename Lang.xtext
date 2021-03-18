@@ -1,0 +1,46 @@
+grammar assignment.Lang with org.eclipse.xtext.common.Terminals
+
+generate lang "http://www.Lang.assignment"
+
+MathExp:
+	'result' 'is' exp=Exp
+;
+
+Exp returns Exp: // Illegal due to left recursion
+	left=Atomic (op=('+'|'-'|'*'|'/') right=PlusOrMinus)?
+	//PlusOrMinus
+	//Primary ({Exp.left=current} operator=ExpOp right=Primary)
+	//left=Primary (operator=ExpOp right=Exp)?
+;
+
+PlusOrMinus returns Exp:
+	MulOrDiv(
+		({Plus.left=current} '+' | {Minus.left=current} '-')
+		 right=MulOrDiv
+		 op=('+'|'-')
+	)* 
+;
+
+MulOrDiv returns Exp:
+	Atomic (
+		({Mult.left=current} '*' | {Div.left=current} '/')
+		right=Atomic
+		op=('*'|'/')
+	)*
+;
+
+Atomic returns Exp:
+	{IntConstant} value=INT |
+	{ParConstant} par=Parenthesis
+;
+
+Parenthesis returns Exp:
+	'(' left=Exp')'
+;
+
+ExpOp returns Exp:
+	{Plus} '+'|
+	{Minus} '-'|
+	{Mult} '*' |
+	{Div} '/'
+;
